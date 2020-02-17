@@ -21,8 +21,9 @@ public class WorkshopScript : MonoBehaviour, IBaseGO
         }
     }
 
-    public void LevelUp()
+    public IEnumerator LevelUp()
     {
+        yield return new WaitForSeconds(GSDuration);
         Level++;
         goodsPerGS *= 1.0175f;
     }

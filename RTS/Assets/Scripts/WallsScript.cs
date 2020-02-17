@@ -13,8 +13,9 @@ public class WallsScript : MonoBehaviour, IBaseGO //add atack & defence of units
         throw new System.NotImplementedException();
     }
 
-    public void LevelUp()
+    public IEnumerator LevelUp()
     {
+        yield return new WaitForSeconds(GSDuration);
         Level++;
         throw new System.NotImplementedException();
     }

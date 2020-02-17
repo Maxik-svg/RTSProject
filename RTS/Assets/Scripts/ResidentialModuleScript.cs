@@ -28,8 +28,9 @@ public class ResidentialModuleScript : MonoBehaviour, IBaseGO
         }
     }
 
-    public void LevelUp()
+    public IEnumerator LevelUp()
     {
+        yield return new WaitForSeconds(GSDuration);
         Level++;
         peopleLimit += 200;
         peoplePerGS = Mathf.RoundToInt(peoplePerGS * 1.05f);

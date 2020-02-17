@@ -30,8 +30,9 @@ public class PortalScript : MonoBehaviour, IBaseGO// перетащить сюд
         }
     }
 
-    public void LevelUp()
+    public IEnumerator LevelUp()
     {
+        yield return new WaitForSeconds(GSDuration);
         Level++;
         creditsCoeff *= 1.0025f; //will be changed
         workshop.goodsPerGS *= 1.0025f;

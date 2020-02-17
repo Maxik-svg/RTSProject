@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerBaseScript : MonoBehaviour
 {
     public List<IBaseGO> PlayerBaseBuildings; //List of all player buildings
+    public int peopleNum { get => residentialModule.peopleNum ; } 
+    public int goodsNum { get => (int)workshop.goodsNum; }
+    public int creditsNum { get => (int)portal.creditsNum; }
 
     ResidentialModuleScript residentialModule;
     BarracksScript barracks;
@@ -12,7 +15,7 @@ public class PlayerBaseScript : MonoBehaviour
     WorkshopScript workshop;
     PortalScript portal;
 
-    int peopleNum, goodsNum, creditsNum; //resources
+    //resources
     float gSDuration = 4f;
     public float GSDuration 
     { 
@@ -53,11 +56,8 @@ public class PlayerBaseScript : MonoBehaviour
             portal
         };
 
-
-        peopleNum = residentialModule.peopleNum;
+        //peopleNum = residentialModule.peopleNum;
         print(peopleNum);
-
-        
     }
 
     // Update is called once per frame

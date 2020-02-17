@@ -7,6 +7,6 @@ public interface IBaseGO //interface for all game objects attached to base
     float GSDuration { get; set; }
     int Level { get; set; }
     bool CoroutineStarted { get; set; }
-    void LevelUp();
+    IEnumerator LevelUp();
     IEnumerator GS();//coroutine
 }
