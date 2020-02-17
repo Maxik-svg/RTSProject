@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class ResidentialModuleScript : MonoBehaviour, IBaseGO
 {
-    public float creditsNum = 500;
     public int peopleNum = 200;
     public int peopleLimit = 1000;
     public int peoplePerGS = 100;
-    public float creditsCoeff = 1; // bonus coefficient given by portal
+    
     public float GSDuration { get; set; }
     public int Level { get; set; }
     public bool CoroutineStarted { get; set; }
-    public float creditsPerGS{ get => peopleNum * 0.1f * creditsCoeff; }
+    
 
     public IEnumerator GS()
     {
@@ -23,11 +22,9 @@ public class ResidentialModuleScript : MonoBehaviour, IBaseGO
             else
                 peopleNum = peopleLimit;
 
-            creditsNum += creditsPerGS;
-
-            print("credits: " + creditsNum + $"       {creditsPerGS}");
+            
             print(peopleNum);
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(GSDuration);
         }
     }
 
@@ -41,17 +38,18 @@ public class ResidentialModuleScript : MonoBehaviour, IBaseGO
     // Start is called before the first frame update
     void Start()
     {
+        GSDuration = 4f;
         Level = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.realtimeSinceStartup >= 4f && CoroutineStarted == false)
+        if (CoroutineStarted == false && Time.realtimeSinceStartup >= 4f)
         {
             StartCoroutine(GS());// making game step
             CoroutineStarted = true;
         }
-            
+
     }
 }

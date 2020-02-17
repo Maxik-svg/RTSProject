@@ -17,7 +17,7 @@ public class WorkshopScript : MonoBehaviour, IBaseGO
             goodsNum += goodsPerGS;
             
             print("goods: " + goodsNum);
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(GSDuration);
         }
     }
 
@@ -30,13 +30,14 @@ public class WorkshopScript : MonoBehaviour, IBaseGO
     // Start is called before the first frame update
     void Start()
     {
-        
+        GSDuration = 4f;
+        Level = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.realtimeSinceStartup >= 4f && CoroutineStarted == false)
+        if (CoroutineStarted == false && Time.realtimeSinceStartup >= 4f)
         {
             StartCoroutine(GS());// making game step
             CoroutineStarted = true;

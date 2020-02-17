@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2119415279566232407}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -122,6 +122,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e215277198e9947b3453d120efdebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BuyCreditsForGoods: 1.5
+  SellCreditsForGoods: 0.5
+  BuyGoodsForCredits: 1.5
+  SellGoodsForCredits: 0.5
+  creditsNum: 500
+  creditsCoeff: 1
 --- !u!114 &2355168439254005781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,3 +167,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdb4df7efce11bc4aab71cac7a468ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goodsNum: 300
+  goodsPerGS: 100

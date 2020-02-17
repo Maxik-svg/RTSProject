@@ -4,28 +4,60 @@ using UnityEngine;
 
 public class PlayerBaseScript : MonoBehaviour
 {
-    GameObject mainBase;
+    public List<IBaseGO> PlayerBaseBuildings; //List of all player buildings
+
     ResidentialModuleScript residentialModule;
     BarracksScript barracks;
     WallsScript walls;
     WorkshopScript workshop;
     PortalScript portal;
+
     int peopleNum, goodsNum, creditsNum; //resources
-    //GameObject Barracks, Portal, ResidentialModule, Walls, Workshop;
-   // int peopleLimit;
-    // Start is called before the first frame update
+    float gSDuration = 4f;
+    public float GSDuration 
+    { 
+        get => gSDuration; 
+        set
+        {
+            if (gSDuration != value)
+            {
+                gSDuration = value;
+                OnGSDurationChange();
+            }
+        }
+    }
+
+    void OnGSDurationChange()
+    {
+        foreach (var item in PlayerBaseBuildings)
+        {
+            item.GSDuration = gSDuration; 
+        }
+    }
+
     void Start()
     {
         //Getting links for all base components
-        mainBase = GameObject.FindGameObjectWithTag("PlayerBase");
-        residentialModule = mainBase.GetComponent<ResidentialModuleScript>();
-        barracks = mainBase.GetComponent<BarracksScript>();
-        walls = mainBase.GetComponent<WallsScript>();
-        workshop = mainBase.GetComponent<WorkshopScript>();
-        portal = mainBase.GetComponent<PortalScript>();
+        residentialModule = this.GetComponent<ResidentialModuleScript>();
+        barracks = this.GetComponent<BarracksScript>();
+        walls = this.GetComponent<WallsScript>();
+        workshop = this.GetComponent<WorkshopScript>();
+        portal = this.GetComponent<PortalScript>();
+
+        PlayerBaseBuildings = new List<IBaseGO>
+        {
+            residentialModule,
+            barracks,
+            walls,
+            workshop,
+            portal
+        };
+
 
         peopleNum = residentialModule.peopleNum;
         print(peopleNum);
+
+        
     }
 
     // Update is called once per frame

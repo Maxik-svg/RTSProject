@@ -6,29 +6,45 @@ public class GameController : MonoBehaviour
 {
     public GameObject Cell;
     public GameObject Canvas;
-    public float GSDuration = 4f; //--------------------------howToUSE?
+    //public float GSDuration = 4f; //--------------------------howToUSE?
+    PlayerBaseScript playerBaseScript;
     Vector2[,] gameField; //array of all game cells
     int n, m; //Height & width of our game field
 
-    void ChangeGSDurationPlus()
+    void ChangeGSDurationLong()
     {
-        GSDuration = 8f;
+        playerBaseScript.GSDuration = 8f;
     }
 
-    void ChangeGSDurationMinus()
+    void ChangeGSDurationShort()
     {
-        GSDuration = 2f;
+        playerBaseScript.GSDuration = 2f;
+    }
+
+    void ChangeGSDurationStandart()
+    {
+        playerBaseScript.GSDuration = 4f;
     }
 
     void Start()
     {
         Instantiate(Canvas);
-        (n, m) = (15, 15); 
-        (int N, int M) = ((int)Mathf.Floor(n/2), (int)Mathf.Floor(m / 2)); //Will be used for changing positions of cells
+        playerBaseScript = GameObject.FindGameObjectWithTag("PlayerBase").GetComponent<PlayerBaseScript>();
+        playerBaseScript.GSDuration = 4f;
+        (n, m) = (15, 15);
+        CreateGameField(n, m);
+    }
+
+    void Update()
+    {
+        
+    }
+
+    void CreateGameField(int n, int m)
+    {
+        (int N, int M) = ((int)Mathf.Floor(n / 2), (int)Mathf.Floor(m / 2)); //Will be used for changing positions of cells
         gameField = new Vector2[n, m];
 
-
-        
         for (int i = 0; i < n; i++) // Creating game field
         {
             for (int j = 0; j < m; j++)
@@ -41,11 +57,6 @@ public class GameController : MonoBehaviour
             N--;
             M = (int)Mathf.Floor(m / 2);
         }
-    }
-
-    void Update()
-    {
-        
     }
 
     IEnumerator GS()
