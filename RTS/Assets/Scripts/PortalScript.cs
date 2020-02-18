@@ -8,15 +8,15 @@ public class PortalScript : MonoBehaviour, IBaseGO// перетащить сюд
     public float SellCreditsForGoods = 0.5f;
     public float BuyGoodsForCredits = 1.5f;
     public float SellGoodsForCredits = 0.5f;
-    ResidentialModuleScript residentialModule;
-    WorkshopScript workshop;
     public float creditsNum = 500;
     public float creditsCoeff = 1; // bonus coefficient given by portal
+
+    PlayerBaseScript playerBase;
 
     public float GSDuration { get; set; }
     public int Level { get; set; }
     public bool CoroutineStarted { get; set; }
-    public float creditsPerGS { get => residentialModule.peopleNum * 0.1f * creditsCoeff; }
+    public float creditsPerGS { get => playerBase.PeopleNum * 0.1f * creditsCoeff; }//change
 
     public IEnumerator GS()
     {
@@ -30,12 +30,20 @@ public class PortalScript : MonoBehaviour, IBaseGO// перетащить сюд
         }
     }
 
+    void GiveWorkshopsGSBonus() //makes workshops more productive
+    {
+        foreach (var item in playerBase.Workshops)
+        {
+            item.goodsPerGS *= 1.0025f;
+        }
+    }
+
     public IEnumerator LevelUp()
     {
         yield return new WaitForSeconds(GSDuration);
         Level++;
-        creditsCoeff *= 1.0025f; //will be changed
-        workshop.goodsPerGS *= 1.0025f;
+        creditsCoeff *= 1.0025f; // influences credit making productivity
+        GiveWorkshopsGSBonus();
         float diff = (BuyCreditsForGoods - SellCreditsForGoods) * 0.99f / 2; //difference between selling and buying
         BuyCreditsForGoods = BuyGoodsForCredits = 1 + diff;
         SellCreditsForGoods = SellGoodsForCredits = 1 - diff;
@@ -46,16 +54,16 @@ public class PortalScript : MonoBehaviour, IBaseGO// перетащить сюд
     {
         GSDuration = 4f;
         Level = 1;
-        residentialModule = this.GetComponent<ResidentialModuleScript>();
-        workshop = this.GetComponent<WorkshopScript>();
+        playerBase = this.GetComponent<PlayerBaseScript>();
+        //LevelUp();
     }
-
     // Update is called once per frame
     void Update()
     {
         if (CoroutineStarted == false && Time.realtimeSinceStartup >= 4f)
         {
             StartCoroutine(GS());// making game step
+            //StartCoroutine(LevelUp());
             CoroutineStarted = true;
         }
     }

@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
+
+
 
 public class GameController : MonoBehaviour
 {
     public GameObject Cell;
     public GameObject Canvas;
+    public UnityEvent NoResourcesEvent = new UnityEvent();
     //public float GSDuration = 4f; //--------------------------howToUSE?
     PlayerBaseScript playerBaseScript;
     Vector2[,] gameField; //array of all game cells
@@ -26,9 +30,15 @@ public class GameController : MonoBehaviour
         playerBaseScript.GSDuration = 4f;
     }
 
+    void NoResourceEventAction()
+    {
+        //add code for UI message
+    }
+
     void Start()
     {
         Instantiate(Canvas);
+        NoResourcesEvent.AddListener(NoResourceEventAction); // will help to show player UI Window with issue (not enough resources) text
         playerBaseScript = GameObject.FindGameObjectWithTag("PlayerBase").GetComponent<PlayerBaseScript>();
         playerBaseScript.GSDuration = 4f;
         (n, m) = (15, 15);

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WallsScript : MonoBehaviour, IBaseGO //add atack & defence of units
 {
+    BarracksScript barracks;
     public float GSDuration { get; set; }
     public int Level { get; set; }
     public bool CoroutineStarted { get; set; }
@@ -17,13 +18,15 @@ public class WallsScript : MonoBehaviour, IBaseGO //add atack & defence of units
     {
         yield return new WaitForSeconds(GSDuration);
         Level++;
-        throw new System.NotImplementedException();
+        barracks.WallsDefenceBonus += 0.05f;
     }
 
     // Start is called before the first frame update
     void Start()
     {
         Level = 1;
+        barracks = this.GetComponent<BarracksScript>();
+        barracks.WallsDefenceBonus += 0.05f; //basic wall defence bonus
     }
 
     // Update is called once per frame

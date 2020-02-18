@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WorkshopScript : MonoBehaviour, IBaseGO
 {
-    public float goodsNum = 300;
+    public float goodsNum;
     public float goodsPerGS = 100;
     public float GSDuration { get; set; }
     public int Level { get; set; }
@@ -16,7 +16,7 @@ public class WorkshopScript : MonoBehaviour, IBaseGO
         {
             goodsNum += goodsPerGS;
             
-            print("goods: " + goodsNum);
+            //print("goods: " + goodsNum);
             yield return new WaitForSeconds(GSDuration);
         }
     }

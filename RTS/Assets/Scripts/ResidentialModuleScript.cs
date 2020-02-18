@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ResidentialModuleScript : MonoBehaviour, IBaseGO
 {
-    public int peopleNum = 200;
+    public int peopleNum;
     public int peopleLimit = 1000;
     public int peoplePerGS = 100;
     
@@ -23,7 +23,7 @@ public class ResidentialModuleScript : MonoBehaviour, IBaseGO
                 peopleNum = peopleLimit;
 
             
-            print(peopleNum);
+            //print(peopleNum);
             yield return new WaitForSeconds(GSDuration);
         }
     }
