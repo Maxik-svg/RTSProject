@@ -8,7 +8,7 @@ public class BarracksScript : MonoBehaviour, IBaseGO
     public int SUnitsNum, AUnitsNum, DUnitsNum;
     public int SUnitsInSquadNum, AUnitsInSquadNum, DUnitsInSquadNum;
     public int UnitsLimit = 200;
-    public float WallsDefenceBonus = 0; // defence bonus provided by walls
+    public float WallsDefenseBonus = 0; // defense bonus provided by walls
     PlayerBaseScript playerBase;
 
     public float GSDuration { get; set; }
@@ -24,13 +24,13 @@ public class BarracksScript : MonoBehaviour, IBaseGO
                 (DUnitsNum - DUnitsInSquadNum) * UnitD.attack;
         }
     }
-    public float Defence //checking number of units on the base and returning their summary defence + wall bonus per unit
+    public float Defense //checking number of units on the base and returning their summary defense + wall bonus per unit
     {
         get
         {
-            return (SUnitsNum - SUnitsInSquadNum) * (UnitS.defence + WallsDefenceBonus) +
-                (AUnitsNum - AUnitsInSquadNum) * (UnitA.defence + WallsDefenceBonus) +
-                (DUnitsNum - DUnitsInSquadNum) * (UnitD.defence + WallsDefenceBonus);
+            return (SUnitsNum - SUnitsInSquadNum) * (UnitS.defense + WallsDefenseBonus) +
+                (AUnitsNum - AUnitsInSquadNum) * (UnitA.defense + WallsDefenseBonus) +
+                (DUnitsNum - DUnitsInSquadNum) * (UnitD.defense + WallsDefenseBonus);
         }
     }
 
@@ -47,11 +47,11 @@ public class BarracksScript : MonoBehaviour, IBaseGO
         UnitsLimit += 100;
 
         UnitA.attack += 0.1f;
-        UnitA.defence += 0.1f;
+        UnitA.defense += 0.1f;
         UnitD.attack += 0.1f;
-        UnitD.defence += 0.1f;
+        UnitD.defense += 0.1f;
         UnitS.attack += 0.1f;
-        UnitS.defence += 0.1f;
+        UnitS.defense += 0.1f;
     }
 
     IEnumerator Train(int AUnits, int SUnits, int DUnits) //FINISH this

@@ -6,5 +6,5 @@ public static class UnitA
 {
     public static float speed = 2f;
     public static float attack = 5f;
-    public static float defence = 1f;
+    public static float defense = 1f;
 }

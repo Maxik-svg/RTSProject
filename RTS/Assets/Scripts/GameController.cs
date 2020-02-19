@@ -8,7 +8,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public GameObject Cell;
-    public GameObject Canvas;
+    public GameObject Canvas; // Canvas for adding UI on go
     public UnityEvent NoResourcesEvent = new UnityEvent();
     //public float GSDuration = 4f; //--------------------------howToUSE?
     PlayerBaseScript playerBaseScript;
@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        Instantiate(Canvas);
+        //Instantiate(Canvas);
         NoResourcesEvent.AddListener(NoResourceEventAction); // will help to show player UI Window with issue (not enough resources) text
         playerBaseScript = GameObject.FindGameObjectWithTag("PlayerBase").GetComponent<PlayerBaseScript>();
         playerBaseScript.GSDuration = 4f;

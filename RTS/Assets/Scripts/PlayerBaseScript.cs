@@ -14,6 +14,7 @@ public class PlayerBaseScript : MonoBehaviour
     WallsScript walls;
     WorkshopScript workshop;
     PortalScript portal;
+    GameObject playerBaseWindow;
     float gSDuration = 4f; //GS duration
     int lastPeopleNumCheck;
     float lastGoodsNumCheck;
@@ -49,7 +50,7 @@ public class PlayerBaseScript : MonoBehaviour
             else
                 gameController.NoResourcesEvent.Invoke();
         }
-    }// change 
+    }// change?
     public float GoodsNum
     {
         get
@@ -95,7 +96,7 @@ public class PlayerBaseScript : MonoBehaviour
         }
     }//------------------------
     public float Attack { get => barracks.Attack; }
-    public float Defence { get => barracks.Defence; }
+    public float Defense { get => barracks.Defense; }
     public float GSDuration 
     { 
         get => gSDuration; 
@@ -117,9 +118,16 @@ public class PlayerBaseScript : MonoBehaviour
         }
     }
 
+    private void OnMouseDown()
+    {
+        playerBaseWindow.SetActive(true);
+    }
+
     void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        
+
         //Getting links for all base components
         residentialModule = this.GetComponent<ResidentialModuleScript>();
         barracks = this.GetComponent<BarracksScript>();
@@ -127,8 +135,8 @@ public class PlayerBaseScript : MonoBehaviour
         workshop = this.GetComponent<WorkshopScript>();
         portal = this.GetComponent<PortalScript>();
 
-        residentialModule.peopleNum = 200;
-        workshop.goodsNum = 300;
+        residentialModule.peopleNum = 200; // basic peopleNum
+        workshop.goodsNum = 300; // basic goodsNum
         //ResidentialModules.A
 
         PlayerBaseBuildings = new List<IBaseGO>
@@ -143,13 +151,20 @@ public class PlayerBaseScript : MonoBehaviour
         Workshops = new List<WorkshopScript> { workshop };
 
         //peopleNum = residentialModule.peopleNum;
-        PeopleNum -= 300;
-        print(PeopleNum);
+        //PeopleNum -= 300;
+        //print(PeopleNum);
+        playerBaseWindow = GameObject.FindGameObjectWithTag("PlayerBaseMenu").gameObject;
+        playerBaseWindow.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        print(GoodsNum);
+        //print(GoodsNum);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //residentialModule.peopleNum = 1000;
+            StartCoroutine(residentialModule.LevelUp());
+        }
     }
 }
