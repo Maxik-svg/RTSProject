@@ -11,7 +11,7 @@ public class PortalScript : MonoBehaviour, IBaseGO// перетащить сюд
     public float creditsNum = 500;
     public float creditsCoeff = 1; // bonus coefficient given by portal
 
-    PlayerBaseScript playerBase;
+    public PlayerBaseScript playerBase { get; set; }
 
     public float GSDuration { get; set; }
     public int Level { get; set; }
@@ -36,9 +36,14 @@ public class PortalScript : MonoBehaviour, IBaseGO// перетащить сюд
         }
     }
 
-    public IEnumerator LevelUp()
+    public void LevelUp()
     {
-        yield return new WaitForSeconds(GSDuration);
+        StartCoroutine(LevelUpCoroutine());
+    }
+
+    public IEnumerator LevelUpCoroutine()
+    {
+        yield return new WaitForSeconds(4f);
         Level++;
         creditsCoeff *= 1.0025f; // influences credit making productivity
         GiveWorkshopsGSBonus();

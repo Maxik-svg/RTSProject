@@ -9,7 +9,7 @@ public class CellScript : MonoBehaviour
     public bool IsBaseCell; // used to chack if cell is valkable (for squads)
     public Vector2 Position;
 
-    private void OnMouseDown()
+    /*private void OnMouseDown()
     {
         if (true) //Think of conditions
         {
@@ -17,7 +17,7 @@ public class CellScript : MonoBehaviour
                 GetComponent<SquadScript>().
                 TargetPos = this.Position;
         }
-    }
+    }*/
 
 
     // Start is called before the first frame update

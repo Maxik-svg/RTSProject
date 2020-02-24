@@ -7,17 +7,20 @@ public class PlayerBaseScript : MonoBehaviour
     public List<IBaseGO> PlayerBaseBuildings; //List of all player buildings
     public List<ResidentialModuleScript> ResidentialModules; //List of all ResModules on the base
     public List<WorkshopScript> Workshops; //List of all Workshops on the base
+    public GameObject NoResourcesWindow;
+
+    public static ResidentialModuleScript residentialModule;
+    public static BarracksScript barracks;
+    public static WallsScript walls;
+    public static WorkshopScript workshop;
+    public static PortalScript portal;
 
     GameController gameController;
-    ResidentialModuleScript residentialModule;
-    public static BarracksScript barracks;
-    WallsScript walls;
-    WorkshopScript workshop;
-    PortalScript portal;
     GameObject playerBaseWindow;
     float gSDuration = 4f; //GS duration
     int lastPeopleNumCheck;
     float lastGoodsNumCheck;
+    bool trigger;
     public int PeopleNum 
     { 
         get
@@ -48,7 +51,7 @@ public class PlayerBaseScript : MonoBehaviour
                 }
             }
             else
-                gameController.NoResourcesEvent.Invoke();
+                GameController.NoResourcesEvent.Invoke();
         }
     }
     public float GoodsNum
@@ -88,7 +91,7 @@ public class PlayerBaseScript : MonoBehaviour
                 }
             }
             else
-                gameController.NoResourcesEvent.Invoke();
+                GameController.NoResourcesEvent.Invoke();
         }
     }
     public float CreditsNum 
@@ -99,7 +102,7 @@ public class PlayerBaseScript : MonoBehaviour
             if (value >= 0)
                 portal.creditsNum = value;
             else
-                gameController.NoResourcesEvent.Invoke();
+                GameController.NoResourcesEvent.Invoke();
         }
     }//------------------------
     public float Attack { get => barracks.Attack; }
@@ -130,10 +133,21 @@ public class PlayerBaseScript : MonoBehaviour
         playerBaseWindow.SetActive(true);
     }
 
+    public void NoResourceEventAction()
+    {
+        NoResourcesWindow.SetActive(true);
+    }
+
+    public void ToManyUnitsEventAction()
+    {
+        //add code
+    }
+
     void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-        
+        GameController.NoResourcesEvent.AddListener(NoResourceEventAction); // will help to show player UI Window with issue (not enough resources) text
+        GameController.ToManyUnitsEvent.AddListener(ToManyUnitsEventAction);
 
         //Getting links for all base components
         residentialModule = this.GetComponent<ResidentialModuleScript>();
@@ -160,18 +174,25 @@ public class PlayerBaseScript : MonoBehaviour
         //peopleNum = residentialModule.peopleNum;
         //PeopleNum -= 300;
         //print(PeopleNum);
-        playerBaseWindow = GameObject.FindGameObjectWithTag("PlayerBaseMenu").gameObject;
-        playerBaseWindow.SetActive(false);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!trigger)
+        {
+            trigger = !trigger;
+            playerBaseWindow = GameObject.FindGameObjectWithTag("PlayerBaseMenu").gameObject;
+            playerBaseWindow.SetActive(false);
+            
+        }
+
         //print(GoodsNum);
-        if (Input.GetKeyDown(KeyCode.Space))
+        /*if (Input.GetKeyDown(KeyCode.Space))
         {
             //residentialModule.peopleNum = 1000;
             StartCoroutine(residentialModule.LevelUp());
-        }
+        }*/
     }
 }

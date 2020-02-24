@@ -9,7 +9,7 @@ public class BarracksScript : MonoBehaviour, IBaseGO
     public int SUnitsInSquadNum, AUnitsInSquadNum, DUnitsInSquadNum;
     public int UnitsLimit = 200;
     public float WallsDefenseBonus = 0; // defense bonus provided by walls
-    PlayerBaseScript playerBase;
+    public PlayerBaseScript playerBase { get; set; }
 
     public float GSDuration { get; set; }
     public int Level { get; set; }
@@ -40,9 +40,14 @@ public class BarracksScript : MonoBehaviour, IBaseGO
         yield return new WaitForSeconds(GSDuration);
     }
 
-    public IEnumerator LevelUp()
+    public void LevelUp()
     {
-        yield return new WaitForSeconds(GSDuration);
+        StartCoroutine(LevelUpCoroutine());
+    }
+
+    public IEnumerator LevelUpCoroutine()
+    {
+        yield return new WaitForSeconds(4f);
         Level++;
         UnitsLimit += 100;
 
@@ -53,24 +58,31 @@ public class BarracksScript : MonoBehaviour, IBaseGO
         UnitS.attack += 0.1f;
         UnitS.defense += 0.1f;
     }
-
-    IEnumerator Train(int AUnits, int SUnits, int DUnits) //FINISH this
+    public void TrainUnits(int A, int S, int D)
     {
-        yield return new WaitForSeconds(GSDuration);
+        StartCoroutine(TrainUnitsCoroutine(A, S, D));
+    }
+
+    IEnumerator TrainUnitsCoroutine(int AUnits, int SUnits, int DUnits) 
+    {
+        yield return new WaitForSeconds(4f);
         int newUnitsNum = AUnits + SUnits + DUnits;
-        if (UnitsNum + AUnits + SUnits + DUnits <= UnitsLimit 
-            /* && playerBase.CreditsNum >= 10 * newUnitsNum && 
-            playerBase.GoodsNum >= 10 * newUnitsNum &&
-            playerBase.PeopleNum >= 1 * newUnitsNum*/) //Finish IT!
+        if (UnitsNum + AUnits + SUnits + DUnits <= UnitsLimit)
         {
-            AUnitsNum += AUnits;
-            SUnitsNum += SUnits;
-            DUnitsNum += DUnits;
+            if (playerBase.CreditsNum >= 10 * newUnitsNum && playerBase.GoodsNum >= 10 * newUnitsNum)
+            {
+                playerBase.CreditsNum -= 10 * newUnitsNum;
+                playerBase.GoodsNum -= 10 * newUnitsNum;
 
-            playerBase.CreditsNum -= 10 * newUnitsNum;
-            //playerBase.GoodsNum -= 10 * newUnitsNum;
-
+                AUnitsNum += AUnits;
+                SUnitsNum += SUnits;
+                DUnitsNum += DUnits;
+            }
+            else
+                GameController.NoResourcesEvent.Invoke();
         }
+        else
+            GameController.ToManyUnitsEvent.Invoke();
     }
 
     // Start is called before the first frame update

@@ -6,6 +6,7 @@ public class WorkshopScript : MonoBehaviour, IBaseGO
 {
     public float goodsNum;
     public float goodsPerGS = 100;
+    public PlayerBaseScript playerBase { get; set; }
     public float GSDuration { get; set; }
     public int Level { get; set; }
     public bool CoroutineStarted { get; set; }
@@ -21,11 +22,26 @@ public class WorkshopScript : MonoBehaviour, IBaseGO
         }
     }
 
-    public IEnumerator LevelUp()
+    public void LevelUp()
+    {
+        StartCoroutine(LevelUpCoroutine());
+    }
+
+    public IEnumerator LevelUpCoroutine()
     {
         yield return new WaitForSeconds(GSDuration);
-        Level++;
-        goodsPerGS *= 1.0175f;
+        float price = GameController.LevelUpPrice(Level);
+
+        if (playerBase.GoodsNum >= price && playerBase.CreditsNum >= price)
+        {
+            Level++;
+            goodsPerGS *= 1.0175f;
+            playerBase.GoodsNum -= price;
+            playerBase.CreditsNum -= price;
+        }
+        else
+            playerBase.CreditsNum -= playerBase.CreditsNum + 2;
+
     }
 
     // Start is called before the first frame update
@@ -33,6 +49,7 @@ public class WorkshopScript : MonoBehaviour, IBaseGO
     {
         GSDuration = 4f;
         Level = 1;
+        playerBase = this.GetComponent<PlayerBaseScript>();
     }
 
     // Update is called once per frame

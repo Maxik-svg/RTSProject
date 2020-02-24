@@ -7,14 +7,22 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public GameObject PlayerBase;
+    public GameObject EnemyBase;
     public GameObject Cell;
     public GameObject Canvas; // Canvas for adding UI on go
-    public UnityEvent NoResourcesEvent = new UnityEvent();
+    public static UnityEvent NoResourcesEvent = new UnityEvent();
+    public static UnityEvent ToManyUnitsEvent = new UnityEvent();
     public List<SquadScript> PlayerSquads;
     public static List<CellScript> gameField; //list of all game cells
 
     PlayerBaseScript playerBaseScript;
     int h, w; //Height & width of our game field
+
+    public static float LevelUpPrice(int lvl)
+    {
+        return lvl * 100f + lvl / 0.985f;
+    }
 
     public void ChangeGSDurationSlow()
     {
@@ -37,19 +45,17 @@ public class GameController : MonoBehaviour
         Debug.Log(playerBaseScript.GSDuration);
     }
 
-    public static void NoResourceEventAction()
-    {
-        //add code for UI message
-    }
-
     void Start()
     {
         //Instantiate(Canvas);
-        NoResourcesEvent.AddListener(NoResourceEventAction); // will help to show player UI Window with issue (not enough resources) text
+
         playerBaseScript = GameObject.FindGameObjectWithTag("PlayerBase").GetComponent<PlayerBaseScript>();
         playerBaseScript.GSDuration = 4f;
         (h, w) = (15, 15);
         CreateGameField(h, w);
+        RandomPlayerPosition(); //places playerBase to random map point
+
+
         //PathFinder pathFinder = new PathFinder(new Vector2(-7, -7), new Vector2(7, 7));
         //List<Vector2> path = pathFinder.GetPath();
         
@@ -92,5 +98,18 @@ public class GameController : MonoBehaviour
             //event?
             yield return new WaitForSeconds(4f);
         }
+    }
+
+    void RandomPlayerPosition()
+    {
+        //GameObject player_base = Instantiate(PlayerBase);
+        PlayerBase.transform.position = 
+            new Vector3(Random.Range(-7, 7), Random.Range(-7, 7), -1);
+        //PlayerBase = player_base;
+    }
+
+    void RandomEnemies()
+    {
+
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class WallsScript : MonoBehaviour, IBaseGO //add atack & defense of units
 {
     BarracksScript barracks;
+    public PlayerBaseScript playerBase { get; set; }
     public float GSDuration { get; set; }
     public int Level { get; set; }
     public bool CoroutineStarted { get; set; }
@@ -14,11 +15,27 @@ public class WallsScript : MonoBehaviour, IBaseGO //add atack & defense of units
         throw new System.NotImplementedException();
     }
 
-    public IEnumerator LevelUp()
+    public void LevelUp()
     {
-        yield return new WaitForSeconds(GSDuration);
-        Level++;
-        barracks.WallsDefenseBonus += 0.05f;
+        StartCoroutine(LevelUpCoroutine());
+    }
+
+    public IEnumerator LevelUpCoroutine()
+    {
+        yield return new WaitForSeconds(4f);
+        float price = GameController.LevelUpPrice(Level);
+
+        if (playerBase.GoodsNum >= price && playerBase.CreditsNum >= price)
+        {
+            Level++;
+            barracks.WallsDefenseBonus += 0.05f;
+            playerBase.GoodsNum -= price;
+            playerBase.CreditsNum -= price;
+        }
+        else
+            playerBase.CreditsNum -= playerBase.CreditsNum + 2;
+        
+        
     }
 
     // Start is called before the first frame update
@@ -27,6 +44,8 @@ public class WallsScript : MonoBehaviour, IBaseGO //add atack & defense of units
         Level = 1;
         barracks = this.GetComponent<BarracksScript>();
         barracks.WallsDefenseBonus += 0.05f; //basic wall defense bonus
+        playerBase = this.GetComponent<PlayerBaseScript>();
+
     }
 
     // Update is called once per frame
