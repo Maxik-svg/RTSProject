@@ -10,7 +10,7 @@ public class PlayerBaseScript : MonoBehaviour
 
     GameController gameController;
     ResidentialModuleScript residentialModule;
-    BarracksScript barracks;
+    public static BarracksScript barracks;
     WallsScript walls;
     WorkshopScript workshop;
     PortalScript portal;
@@ -50,7 +50,7 @@ public class PlayerBaseScript : MonoBehaviour
             else
                 gameController.NoResourcesEvent.Invoke();
         }
-    }// change?
+    }
     public float GoodsNum
     {
         get
@@ -65,6 +65,13 @@ public class PlayerBaseScript : MonoBehaviour
             if (value >= 0)
             {
                 float diff = lastGoodsNumCheck - value;
+
+                if (diff < 0)
+                {
+                    workshop.goodsNum -= diff;
+                    return;
+                }
+                    
 
                 foreach (var item in Workshops)
                 {

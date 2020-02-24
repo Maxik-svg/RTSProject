@@ -23,9 +23,7 @@ public class PortalScript : MonoBehaviour, IBaseGO// перетащить сюд
         while (true)
         {
             creditsNum += creditsPerGS;
-
-            print("credits: " + creditsNum + $"     {creditsPerGS}");
-           
+            //print("credits: " + creditsNum + $"     {creditsPerGS}");
             yield return new WaitForSeconds(GSDuration);
         }
     }
@@ -44,7 +42,7 @@ public class PortalScript : MonoBehaviour, IBaseGO// перетащить сюд
         Level++;
         creditsCoeff *= 1.0025f; // influences credit making productivity
         GiveWorkshopsGSBonus();
-        float diff = (BuyCreditsForGoods - SellCreditsForGoods) * 0.99f / 2; //difference between selling and buying
+        float diff = (BuyCreditsForGoods - SellCreditsForGoods) * 0.99f / 2; //new difference between selling and buying
         BuyCreditsForGoods = BuyGoodsForCredits = 1 + diff;
         SellCreditsForGoods = SellGoodsForCredits = 1 - diff;
     }

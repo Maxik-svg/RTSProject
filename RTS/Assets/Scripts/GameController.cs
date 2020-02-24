@@ -10,27 +10,34 @@ public class GameController : MonoBehaviour
     public GameObject Cell;
     public GameObject Canvas; // Canvas for adding UI on go
     public UnityEvent NoResourcesEvent = new UnityEvent();
-    //public float GSDuration = 4f; //--------------------------howToUSE?
+    public List<SquadScript> PlayerSquads;
+    public static List<CellScript> gameField; //list of all game cells
+
     PlayerBaseScript playerBaseScript;
-    Vector2[,] gameField; //array of all game cells
-    int n, m; //Height & width of our game field
+    int h, w; //Height & width of our game field
 
-    void ChangeGSDurationLong()
+    public void ChangeGSDurationSlow()
     {
-        playerBaseScript.GSDuration = 8f;
+        //playerBaseScript.GSDuration = 8f;
+        Time.timeScale = 0.5f;
+        Debug.Log(playerBaseScript.GSDuration);
     }
 
-    void ChangeGSDurationShort()
+    public void ChangeGSDurationFast()
     {
-        playerBaseScript.GSDuration = 2f;
+        //playerBaseScript.GSDuration = 2f;
+        Time.timeScale = 2f;
+        Debug.Log(playerBaseScript.GSDuration);
     }
 
-    void ChangeGSDurationStandart()
+    public void ChangeGSDurationNormal()
     {
-        playerBaseScript.GSDuration = 4f;
+        //playerBaseScript.GSDuration = 4f;
+        Time.timeScale = 1f;
+        Debug.Log(playerBaseScript.GSDuration);
     }
 
-    void NoResourceEventAction()
+    public static void NoResourceEventAction()
     {
         //add code for UI message
     }
@@ -41,8 +48,12 @@ public class GameController : MonoBehaviour
         NoResourcesEvent.AddListener(NoResourceEventAction); // will help to show player UI Window with issue (not enough resources) text
         playerBaseScript = GameObject.FindGameObjectWithTag("PlayerBase").GetComponent<PlayerBaseScript>();
         playerBaseScript.GSDuration = 4f;
-        (n, m) = (15, 15);
-        CreateGameField(n, m);
+        (h, w) = (15, 15);
+        CreateGameField(h, w);
+        //PathFinder pathFinder = new PathFinder(new Vector2(-7, -7), new Vector2(7, 7));
+        //List<Vector2> path = pathFinder.GetPath();
+        
+        
     }
 
     void Update()
@@ -50,22 +61,27 @@ public class GameController : MonoBehaviour
         
     }
 
-    void CreateGameField(int n, int m)
+    void CreateGameField(int h, int w)
     {
-        (int N, int M) = ((int)Mathf.Floor(n / 2), (int)Mathf.Floor(m / 2)); //Will be used for changing positions of cells
-        gameField = new Vector2[n, m];
+        (int N, int M) = ((int)Mathf.Floor(h / 2), (int)Mathf.Floor(w / 2)); //Will be used for changing positions of cells
+        //gameField = new Vector2[n, m];
+        //gameField = new GameObject[n, m];
+        gameField = new List<CellScript>();
 
-        for (int i = 0; i < n; i++) // Creating game field
+        for (int i = 0; i < h; i++) // Creating game field
         {
-            for (int j = 0; j < m; j++)
+            for (int j = 0; j < w; j++)
             {
-                gameField[i, j] = new Vector2(-M, N);
-                Cell.transform.position = gameField[i, j];
-                Instantiate(Cell);
+                //gameField[i, j] = new Vector2(-M, N);
+                //Cell.transform.position = gameField[i, j];
+                Cell.transform.position = new Vector2(-M, N);
+                GameObject newObj = Instantiate(Cell);
+                newObj.GetComponent<CellScript>().Position = Cell.transform.position;
+                gameField.Add(newObj.GetComponent<CellScript>());
                 M--;
             }
             N--;
-            M = (int)Mathf.Floor(m / 2);
+            M = (int)Mathf.Floor(w / 2);
         }
     }
 
